@@ -6,6 +6,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import './index.scss'
+import { Outlet } from 'react-router-dom'
 
 const { Header, Sider } = Layout
 
@@ -21,7 +22,7 @@ const items = [
     icon: <DiffOutlined />,
   },
   {
-    label: 'Create',
+    label: 'Publish',
     key: '3',
     icon: <EditOutlined />,
   },
@@ -48,10 +49,13 @@ const GeekLayout = () => {
             theme="dark"
             defaultSelectedKeys={['1']}
             items={items}
-            style={{ height: '100%', borderRight: 0 }}></Menu>
+            style={{ height: '100%', borderRight: 0 }}
+          >
+
+          </Menu>
         </Sider>
         <Layout className="layout-content" style={{ padding: 20 }}>
-          Content
+          <Outlet />
         </Layout>
       </Layout>
     </Layout>
