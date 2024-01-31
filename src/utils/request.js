@@ -14,7 +14,7 @@ request.interceptors.request.use((config) => {
   // Inject token
   const token = getToken()
   if (token) {
-    config.headers.Authorization = `Bearer ${token}` // 如果拼接，按照后端要求
+    config.headers.Authorization = `Bearer ${token}` // 如何拼接，按照后端要求
   }
   return config
 }, (error) => {
