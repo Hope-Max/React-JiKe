@@ -1,7 +1,7 @@
 // State management related to users - 和用户相关的状态管理
 import { createSlice } from "@reduxjs/toolkit";
 import { request } from "@/utils/request"
-import { setToken as _setToken, getToken } from "@/utils";
+import { setToken as _setToken, getToken, removeToken } from "@/utils";
 
 const userStore = createSlice({
   name: "user",
@@ -20,12 +20,17 @@ const userStore = createSlice({
     },
     setUserInfo(state, action) {
       state.userInfo = action.payload
+    },
+    clearUserInfo(state) {
+      state.userInfo = {}
+      state.token = ""
+      removeToken()
     }
   }
 })
 
 // actionCreator
-const { setToken, setUserInfo } = userStore.actions
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions
 // Async actions - obtain token after completing login sucessful
 const fetchLogin = (loginForm) => {
   return async (dispatch) => {
@@ -43,7 +48,7 @@ const fetchUserInfo = () => {
   }
 }
 
-export { fetchLogin, fetchUserInfo }
+export { fetchLogin, fetchUserInfo, clearUserInfo }
 
 const reducer = userStore.reducer
 export default reducer
