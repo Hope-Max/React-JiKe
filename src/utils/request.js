@@ -1,5 +1,6 @@
 // Encapsulate axios
 import axios from "axios"
+import { getToken } from "./token"
 // 1. Root domain name - 根域名
 // 2. Timeout duration - 超时时间
 const request = axios.create({
@@ -10,6 +11,11 @@ const request = axios.create({
 // 在请求发送之前 做拦截 插入一些自定义的配置 参数处理
 request.interceptors.request.use((config) => {
   // Actions before sending a request
+  // Inject token
+  const token = getToken()
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}` // 如果拼接，按照后端要求
+  }
   return config
 }, (error) => {
   // Actions with request errors
