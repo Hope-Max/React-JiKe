@@ -6,12 +6,15 @@ const userStore = createSlice({
   name: "user",
   // States - 数据状态
   initialState: {
-    token: ""
+    // Token persistence - Token持久化
+    token: localStorage.getItem("token_key") || ""
   },
   // Sync actions - 同步修改方法
   reducers: {
     setToken(state, action) {
       state.token = action.payload
+      // Store the token locally
+      localStorage.setItem("token_key", action.payload)
     }
   }
 })
