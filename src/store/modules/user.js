@@ -8,7 +8,8 @@ const userStore = createSlice({
   // States - 数据状态
   initialState: {
     // Token persistence - Token持久化
-    token: getToken() || ""
+    token: getToken() || "",
+    userInfo: {}
   },
   // Sync actions - 同步修改方法
   reducers: {
@@ -16,12 +17,15 @@ const userStore = createSlice({
       state.token = action.payload
       // Store the token locally
       _setToken(action.payload)
+    },
+    setUserInfo(state, action) {
+      state.userInfo = action.payload
     }
   }
 })
 
 // actionCreator
-const { setToken } = userStore.actions
+const { setToken, setUserInfo } = userStore.actions
 // Async actions - obtain token after completing login sucessful
 const fetchLogin = (loginForm) => {
   return async (dispatch) => {
@@ -31,7 +35,15 @@ const fetchLogin = (loginForm) => {
     dispatch(setToken(res.data.token))
   }
 }
-export { fetchLogin }
+
+const fetchUserInfo = () => {
+  return async (dispatch) => {
+    const res = await request.get("/user/profile")
+    dispatch(setUserInfo(res.data))
+  }
+}
+
+export { fetchLogin, fetchUserInfo }
 
 const reducer = userStore.reducer
 export default reducer

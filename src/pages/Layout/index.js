@@ -7,6 +7,9 @@ import {
 } from '@ant-design/icons'
 import './index.scss'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUserInfo } from '@/store/modules/user'
 
 const { Header, Sider } = Layout
 
@@ -31,6 +34,7 @@ const items = [
 const GeekLayout = () => {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const onMenuClick = (route) => {
     console.log(route)
@@ -41,12 +45,20 @@ const GeekLayout = () => {
   // Reverse Highligh Button - 反向高亮
   const location = useLocation()
   const selectedKey = location.pathname
+
+  // User Information
+  useEffect(() => {
+    dispatch(fetchUserInfo())
+  }, [dispatch])
+
+  const { userInfo } = useSelector(state => state.user)
+
   return (
     <Layout>
       <Header className="header">
         <div className="logo" />
         <div className="user-info">
-          <span className="user-name">Username</span>
+          <span className="user-name">{userInfo.name}</span>
           <span className="user-logout">
             <Popconfirm title="Confirm to exit?" okText="Exit" cancelText="Cancel">
               <LogoutOutlined /> Logout
