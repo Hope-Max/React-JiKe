@@ -1,11 +1,16 @@
 import './index.scss'
 import { Card, Form, Input, Button } from 'antd'
 import logo from '@/assets/logo.png'
+import { fetchLogin } from '@/store/modules/user'
+import { useSelector, useDispatch } from 'react-redux'
 
 const Login = () => {
 
+  const dispatch = useDispatch()
+
   const onFinish = (values) => {
     console.log('Success:', values);
+    dispatch(fetchLogin(values))
   }
 
   return (
@@ -13,7 +18,7 @@ const Login = () => {
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* Login Form */}
-        <Form autoComplete="off" validateTrigger="onBlur" onFinish={onFinish}>
+        <Form validateTrigger="onBlur" onFinish={onFinish}>
           <Form.Item
             name="mobile"
             // Multiple validation logic: Validate the previous rule first, then proceed to validate the next one
