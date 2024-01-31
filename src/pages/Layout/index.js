@@ -55,7 +55,6 @@ const GeekLayout = () => {
 
   // Logout
   const onConfirm = () => {
-    console.log("Exit")
     dispatch(clearUserInfo())
     navigate("./login")
   }

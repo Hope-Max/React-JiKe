@@ -1,6 +1,7 @@
 // Encapsulate axios
 import axios from "axios"
-import { getToken } from "./token"
+import { getToken, removeToken } from "./token"
+import router from "@/router"
 // 1. Root domain name - 根域名
 // 2. Timeout duration - 超时时间
 const request = axios.create({
@@ -29,6 +30,13 @@ request.interceptors.response.use((response) => {
 }, (error) => {
   // Will be triggered for status codes beyond the 2xx range - 超出 2xx 范围的状态码都会触发该函数
   // Actions with response errors
+  // Monitoring 401: expired token
+  if (error.response.status === 401) {
+    removeToken()
+    router.navigate("/login")
+    window.location.reload()
+  }
+  console.dir(error.response.status)
   return Promise.reject(error)
 })
 
