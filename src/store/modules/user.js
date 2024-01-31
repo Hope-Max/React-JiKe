@@ -1,20 +1,21 @@
 // State management related to users - 和用户相关的状态管理
 import { createSlice } from "@reduxjs/toolkit";
 import { request } from "@/utils/request"
+import { setToken as _setToken, getToken } from "@/utils";
 
 const userStore = createSlice({
   name: "user",
   // States - 数据状态
   initialState: {
     // Token persistence - Token持久化
-    token: localStorage.getItem("token_key") || ""
+    token: getToken() || ""
   },
   // Sync actions - 同步修改方法
   reducers: {
     setToken(state, action) {
       state.token = action.payload
       // Store the token locally
-      localStorage.setItem("token_key", action.payload)
+      _setToken(action.payload)
     }
   }
 })
