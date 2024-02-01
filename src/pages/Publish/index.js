@@ -47,6 +47,13 @@ const Publish = () => {
     createArticleApi(reqData)
   }
 
+  // Upload Images
+  const [imageList, setImageList] = useState([])
+  const onChange = (value) => {
+    console.log(value)
+    setImageList(value.fileList)
+  }
+
   return (
     <div className="publish">
       <Card
@@ -70,19 +77,39 @@ const Publish = () => {
             rules={[{ required: true, message: 'Please enter the article title' }]}
             style={{ textAlign: "start" }}
           >
-            <Input placeholder="Enter the article title" style={{ width: 400, marginLeft: 10 }} />
+            <Input placeholder="Enter the article title" style={{ width: 400 }} />
           </Form.Item>
           <Form.Item
             label="Channel"
             name="channel_id"
             rules={[{ required: true, message: 'Please select the article channel' }]}
           >
-            <Select placeholder="Select the article channel" style={{ width: 400, marginLeft: 10 }}>
+            <Select placeholder="Select the article channel" style={{ width: 400 }}>
               {/* value属性用户选中之后会自动收集起来做为接口的提交字段 */}
               {channelList.map(item => {
                 return <Option key={item.id} value={item.id}>{item.name}</Option>
               })}
             </Select>
+          </Form.Item>
+          <Form.Item label="Cover" >
+            <Form.Item name="type" >
+              <Radio.Group>
+                <Radio value={1}>Single Image</Radio>
+                <Radio value={3}>Three Image</Radio>
+                <Radio value={0}>No Image</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Upload
+              listType="picture-card"
+              showUploadList
+              action={'http://geek.itheima.net/v1_0/upload'}
+              name='image'
+              onChange={onChange}
+            >
+              <div style={{ marginTop: 8 }}>
+                <PlusOutlined />
+              </div>
+            </Upload>
           </Form.Item>
           <Form.Item
             label="Content"
@@ -94,13 +121,12 @@ const Publish = () => {
               className="publish-quill"
               theme="snow"
               placeholder="Enter the article content"
-              style={{ marginLeft: 10 }}
             />
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
-              <Button size="large" type="primary" htmlType="submit" style={{ marginLeft: 10 }}>
+              <Button size="large" type="primary" htmlType="submit" >
                 Publish Articles
               </Button>
             </Space>
