@@ -7,7 +7,8 @@ import {
   Input,
   Upload,
   Space,
-  Select
+  Select,
+  message
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -33,14 +34,18 @@ const Publish = () => {
   // Get Form Data
   const onFinish = (formValue) => {
     console.log(formValue)
+    // Check if imageType matches the number of cover uploaded
+    if (imageType !== imageList.length) {
+      return message.warning("The number of images uploaded does not match cover type!")
+    }
     const { title, channel_id, content } = formValue
     // Fomat the form data
     const reqData = {
       title,
       content,
       cover: {
-        type: 0,
-        image: []
+        type: imageType,
+        images: imageList.map(item => item.response.data.url)
       },
       channel_id
     }
@@ -50,7 +55,7 @@ const Publish = () => {
   // Upload Images
   const [imageList, setImageList] = useState([])
   const onImageChange = (value) => {
-    console.log(value)
+    // console.log(value)
     setImageList(value.fileList)
   }
 
