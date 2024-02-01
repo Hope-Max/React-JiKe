@@ -49,9 +49,16 @@ const Publish = () => {
 
   // Upload Images
   const [imageList, setImageList] = useState([])
-  const onChange = (value) => {
-    console.log(value)
+  const onImageChange = (value) => {
+    // console.log(value)
     setImageList(value.fileList)
+  }
+
+  // Change the Type of Cover
+  const [imageType, setImageType] = useState(0)
+  const onTypeChange = (e) => {
+    // console.log(e.target.value)
+    setImageType(e.target.value)
   }
 
   return (
@@ -68,7 +75,7 @@ const Publish = () => {
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ type: 1 }}
+          initialValues={{ type: 0 }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -93,23 +100,23 @@ const Publish = () => {
           </Form.Item>
           <Form.Item label="Cover" >
             <Form.Item name="type" >
-              <Radio.Group>
+              <Radio.Group onChange={onTypeChange} >
                 <Radio value={1}>Single Image</Radio>
                 <Radio value={3}>Three Image</Radio>
                 <Radio value={0}>No Image</Radio>
               </Radio.Group>
             </Form.Item>
-            <Upload
+            {imageType > 0 && <Upload
               listType="picture-card"
               showUploadList
               action={'http://geek.itheima.net/v1_0/upload'}
               name='image'
-              onChange={onChange}
+              onChange={onImageChange}
             >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
               </div>
-            </Upload>
+            </Upload>}
           </Form.Item>
           <Form.Item
             label="Content"
