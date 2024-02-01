@@ -50,7 +50,7 @@ const Publish = () => {
   // Upload Images
   const [imageList, setImageList] = useState([])
   const onImageChange = (value) => {
-    // console.log(value)
+    console.log(value)
     setImageList(value.fileList)
   }
 
@@ -112,6 +112,7 @@ const Publish = () => {
               action={'http://geek.itheima.net/v1_0/upload'}
               name='image'
               onChange={onImageChange}
+              maxCount={imageType}
             >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
