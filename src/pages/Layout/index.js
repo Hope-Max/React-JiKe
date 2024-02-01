@@ -80,7 +80,7 @@ const GeekLayout = () => {
             selectedKeys={[selectedKey]}
             onClick={onMenuClick}
             items={items}
-            style={{ height: '100%', borderRight: 0 }}
+            style={{ height: '100%', borderRight: 0, textAlign: "start" }}
           >
           </Menu>
         </Sider>
