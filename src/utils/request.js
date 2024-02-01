@@ -31,6 +31,7 @@ request.interceptors.response.use((response) => {
   // Will be triggered for status codes beyond the 2xx range - 超出 2xx 范围的状态码都会触发该函数
   // Actions with response errors
   // Monitoring 401: expired token
+  console.dir(error)
   if (error.response.status === 401) {
     removeToken()
     router.navigate("/login")
