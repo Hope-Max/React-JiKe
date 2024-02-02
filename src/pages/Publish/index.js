@@ -17,19 +17,33 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useEffect, useState } from 'react'
 import { getChannelApi, createArticleApi } from '@/apis/article'
+import { fetchChannel } from '@/store/modules/channel'
+import { useDispatch, useSelector } from 'react-redux'
+import { useChannel } from '@/hooks/useChannel'
 
 const { Option } = Select
 
 const Publish = () => {
   // Get Channel List
-  const [channelList, setChannelList] = useState([])
-  useEffect(() => {
-    const getChannelList = async () => {
-      const res = await getChannelApi()
-      setChannelList(res.data.channels)
-    }
-    getChannelList()
-  }, [])
+  // 1. useState
+  // const [channelList, setChannelList] = useState([])
+  // useEffect(() => {
+  //   const getChannelList = async () => {
+  //     const res = await getChannelApi()
+  //     setChannelList(res.data.channels)
+  //   }
+  //   getChannelList()
+  // }, [])
+
+  // 2. Redux
+  // const dispatch = useDispatch()
+  // useEffect(() => {
+  //   dispatch(fetchChannel())
+  // }, [dispatch])
+  // const { channelList } = useSelector(state => state.channel)
+
+  // 3. Custom Hooks
+  const { channelList } = useChannel()
 
   // Get Form Data
   const onFinish = (formValue) => {
