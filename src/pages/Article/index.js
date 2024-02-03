@@ -9,17 +9,25 @@ import { useEffect, useState } from 'react'
 import { fetchChannel } from '@/store/modules/channel'
 import { useChannel } from '@/hooks/useChannel'
 import { getArticleListApi } from '@/apis/article'
+import dayjs from "dayjs"
 
 const { Option } = Select
 const { RangePicker } = DatePicker
 
 const Article = () => {
+
+  // Define a enumeration of article status
+  const status = {
+    1: <Tag color="yellow">Pending</Tag>,
+    2: <Tag color="green">Approved</Tag>
+  }
   // 准备列数据
   const columns = [
     {
       title: 'Cover',
       dataIndex: 'cover',
       width: 120,
+      // Reprocessing the data
       render: cover => {
         return <img src={cover.images[0] || img404} width={80} height={60} alt="" />
       }
@@ -32,7 +40,10 @@ const Article = () => {
     {
       title: 'Status',
       dataIndex: 'status',
-      render: data => <Tag color="green">Approved</Tag>
+      // Reprocessing the data - data === status
+      // 1 - Pending 2 - Approved
+      render: data => status[data]
+      // render: data => console.log(data)
     },
     {
       title: 'Publish Date',
@@ -82,15 +93,24 @@ const Article = () => {
   //     title: 'wkwebview离线化加载h5资源解决方案'
   //   }
   // ]
-
+  // Render Article List
   const [articleList, setArticleList] = useState([])
+  // Filter
+  const [reqData, setReqData] = useState({
+    status: "",
+    channel_id: "",
+    begin_pudate: "",
+    end_pudate: "",
+    page: 1,
+    per_page: 4
+  })
   useEffect(() => {
     const fetchArticleList = async () => {
-      const res = await getArticleListApi()
+      const res = await getArticleListApi(reqData)
       setArticleList(res.data.results)
     }
     fetchArticleList()
-  }, [])
+  }, [reqData])
 
   // Get Channel List
   // 1. Redux
@@ -103,6 +123,21 @@ const Article = () => {
   // 2. Custom Hook
   const { channelList } = useChannel()
 
+
+  const onFinish = (formValue) => {
+    // console.log(formValue)
+    const { channel_id, date, status } = formValue
+    const reqData = {
+      status,
+      channel_id,
+      begin_pudate: date[0].format("YYYY-MM-DD"),
+      end_pudate: date[1].format("YYYY-MM-DD"),
+      page: 1,
+      per_page: 4
+    }
+    console.log(reqData)
+    setReqData(reqData)
+  }
 
   return (
     <div>
@@ -119,11 +154,13 @@ const Article = () => {
           initialValues={{ status: '' }}
           labelCol={{ span: 1 }}
           labelAlign={'left'}
+          onFinish={onFinish}
         >
           <Form.Item label="Status" name="status">
-            <Radio.Group>
+            <Radio.Group >
               <Radio value={''}>All</Radio>
               <Radio value={0}>Draft</Radio>
+              <Radio value={1}>Pending</Radio>
               <Radio value={2}>Approved</Radio>
             </Radio.Group>
           </Form.Item>
